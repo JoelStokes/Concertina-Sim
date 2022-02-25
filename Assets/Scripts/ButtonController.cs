@@ -16,18 +16,22 @@ public class ButtonController : MonoBehaviour
     private BellowController bellowController;
     private TextMeshPro text;
     private SpriteRenderer spriteRenderer;
-    private AudioSource audio;
+    private AudioSource audioPlayer;
 
     private bool held = false;
     private bool keyboardPress = false;
 
-    private float waitColor = .25f;
-    private float pressColor = .75f;
+    private float waitColor = .75f;
+    private float pressColor = .35f;
+    
+    private bool pulling = false;
+
+    private float scaleMult = 1.05946f;  //Pitch change is scaleMult^n, n being semitones to raise
 
     void Start()
     {
         bellowController = GameObject.Find("BellowController").GetComponent<BellowController>();
-        audio = GetComponent<AudioSource>();
+        audioPlayer = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         text = transform.GetChild(0).GetComponent<TextMeshPro>();
     }
@@ -52,12 +56,22 @@ public class ButtonController : MonoBehaviour
             }
         }
 
-        if (bellowController.pushing){
-            spriteRenderer.color = new Vector4(1, pressColor, pressColor, 1);
+        if (pulling && bellowController.pushing){
             text.SetText(pushNote);
-        } else {
-            spriteRenderer.color = new Vector4(pressColor, pressColor, 1, 1);
+            pulling = false;
+            if (held){
+                NotePressed();
+            } else {
+                ColorChange();
+            }
+        } else if (!pulling && !bellowController.pushing) {
             text.SetText(pullNote);
+            pulling = true;
+            if (held){
+                NotePressed();
+            } else {
+                ColorChange();
+            }
         }
     }
 
@@ -70,23 +84,32 @@ public class ButtonController : MonoBehaviour
         held = true;
 
         if (bellowController.pushing){  //Set pitch based on bellow direction & note properties
-            audio.pitch = pushPitch;
-            spriteRenderer.color = new Vector4(pressColor, waitColor, waitColor, 1);
+            SetPitch(pushPitch);
+            spriteRenderer.color = new Vector4(waitColor, pressColor, pressColor, 1);
         } else {
-            audio.pitch = pullPitch;
-            spriteRenderer.color = new Vector4(waitColor, waitColor, pressColor, 1);
+            SetPitch(pullPitch);
+            spriteRenderer.color = new Vector4(pressColor, pressColor, waitColor, 1);
         }
 
-        audio.Play();
+        audioPlayer.Play();
+    }
+
+    private void SetPitch(float pitchAdjust){
+        audioPlayer.pitch = -(Mathf.Pow(scaleMult, pitchAdjust));
     }
 
     private void NoteReleased(){
         held = false;
-        audio.Stop();
-        //Color change on hold & release? Slightly darker?
+        audioPlayer.Stop();
+        
+        ColorChange();
     }
 
-    private void ChangeNote(){  //Change Button Text & Color based on direction change
-
+    private void ColorChange(){
+        if (!pulling && !held){
+            spriteRenderer.color = new Vector4(1, waitColor, waitColor, 1);
+        } else if (pulling && !held) {
+            spriteRenderer.color = new Vector4(waitColor, waitColor, 1, 1);
+        }
     }
 }

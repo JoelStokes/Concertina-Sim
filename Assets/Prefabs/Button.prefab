@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08abe4694313f2419df091e84d4f365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullPitch: 0
-  pullNote: 0
   pushPitch: 0
   pushNote: 1
+  pullPitch: 0
+  pullNote: 0
   keystroke: g
 --- !u!82 &2601816545833264830
 AudioSource:
@@ -327,8 +327,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 7.5
-  m_fontSizeBase: 7.5
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
