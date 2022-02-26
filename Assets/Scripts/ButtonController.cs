@@ -6,10 +6,7 @@ using TMPro;
 //Handle button input based on keyboard or mouse, plays one of two notes based on bellow direction
 public class ButtonController : MonoBehaviour
 {
-    public float pushPitch; //note pitch, 1 = Middle C
-    public string pushNote;
-    public float pullPitch;
-    public string pullNote;
+    public NoteLayout[] NoteLayouts;
 
     public string keystroke;    //Key pressed to play
 
@@ -17,6 +14,11 @@ public class ButtonController : MonoBehaviour
     private TextMeshPro text;
     private SpriteRenderer spriteRenderer;
     private AudioSource audioPlayer;
+
+    private float pushPitch; //note pitch, 1 = Middle C
+    private string pushNote;
+    private float pullPitch;
+    private string pullNote;
 
     private bool held = false;
     private bool keyboardPress = false;
@@ -34,6 +36,8 @@ public class ButtonController : MonoBehaviour
         audioPlayer = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         text = transform.GetChild(0).GetComponent<TextMeshPro>();
+
+        SwitchLayout("Jeffries C/G");
     }
 
     //Update checks for the matching keystroke press as an alternative for mouse click, along with button releases
@@ -110,6 +114,17 @@ public class ButtonController : MonoBehaviour
             spriteRenderer.color = new Vector4(1, waitColor, waitColor, 1);
         } else if (pulling && !held) {
             spriteRenderer.color = new Vector4(waitColor, waitColor, 1, 1);
+        }
+    }
+
+    public void SwitchLayout(string newLayout){ //Change current Anglo Note Layout
+        for (int i=0; i<NoteLayouts.Length; i++){
+            if (newLayout == NoteLayouts[i].layoutName){
+                pushPitch = NoteLayouts[i].pushPitch;
+                pushNote = NoteLayouts[i].pushNote;
+                pullPitch = NoteLayouts[i].pullPitch;
+                pullNote = NoteLayouts[i].pullNote;
+            }
         }
     }
 }

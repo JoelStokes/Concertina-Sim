@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0074885e14b383d4b8836dbcc1152707, type: 3}
   m_Name: L 1a
   m_EditorClassIdentifier: 
-  layoutName: Jeffries CG
+  layoutName: Jeffries C/G
   pushPitch: -8
   pushNote: E
   pullPitch: -7
