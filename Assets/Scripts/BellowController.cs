@@ -7,12 +7,12 @@ using TMPro;
 public class BellowController : MonoBehaviour
 {
     public bool pushing = false;
-    public BellowToggle bellowToggle;
+    public bool toggle = true;
     public TextMeshPro directionText;
 
     void Update()
     {
-        if (bellowToggle.toggle){
+        if (toggle){
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.CapsLock)){
                 pushing = !pushing;
             }
@@ -25,6 +25,10 @@ public class BellowController : MonoBehaviour
         }
 
         SetText();
+    }
+
+    public void SetToggle(){
+        toggle = !toggle;
     }
 
     private void SetText(){

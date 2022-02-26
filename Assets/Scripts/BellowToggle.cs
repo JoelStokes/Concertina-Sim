@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//No longer used, moved into Bellow Controller
 public class BellowToggle : MonoBehaviour
 {
-    public bool toggle = false;
+    public bool toggle = true;
 
     private SpriteRenderer spriteRenderer;
 
@@ -12,9 +13,13 @@ public class BellowToggle : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnMouseDown(){
+    public void SetToggle(){
         toggle = !toggle;
         ChangeColor();
+    }
+
+    void OnMouseDown(){ //Probably will be removed/unused?
+        SetToggle();
     }
     private void ChangeColor(){
         if (toggle){
